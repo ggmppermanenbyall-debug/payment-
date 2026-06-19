@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL SANS RE4L • Pembayaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkRed: '#8B0000',
+                        neonRed: '#FF2222',
+                        deepBlack: '#050505',
+                    },
+                    fontFamily: {
+                        gothic: ['"Rajdhani"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-stroke {
+                -webkit-text-stroke: 1px #ff4444;
+            }
+            .text-shadow-glow {
+                text-shadow: 0 0 8px #ff2222, 0 0 16px #ff000070;
+            }
+            .neon-border {
+                box-shadow: 0 0 10px #ff2222, inset 0 0 8px #ff333350;
+            }
+            .bg-overlay {
+                background: linear-gradient(to bottom, rgba(5,0,0,0.75), rgba(20,0,0,0.85));
+            }
+            .scrollbar-none::-webkit-scrollbar {
+                display: none;
+            }
+            .glow-hover:hover {
+                filter: drop-shadow(0 0 10px #ff2222);
+                transform: scale(1.03);
+            }
+        }
+        body {
+            background: url('https://files.catbox.moe/w48p01.jpeg') center/cover no-repeat fixed;
+        }
+        /* Animasi muncul */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-gothic text-white min-h-screen">
+    <!-- Latar belakang gelap transparan -->
+    <div class="fixed inset-0 bg-overlay z-0"></div>
+
+    <!-- Kontainer utama -->
+    <div class="relative z-10 max-w-md mx-auto px-5 py-12 text-center">
+
+        <!-- Judul Utama -->
+        <h1 class="text-[clamp(2.5rem,8vw,3.5rem)] font-black text-neonRed text-stroke text-shadow-glow mb-2 animate-fadeIn">
+            ALL SANS RE4L
+        </h1>
+        <p class="text-red-200 text-lg tracking-wider mb-8 animate-fadeIn" style="animation-delay: 0.2s;">
+            • JALANIN ALUR • TUNAIKAN JANJI •
+        </p>
+
+        <!-- Kartu Informasi Pembayaran -->
+        <div class="bg-black/65 backdrop-blur-sm border border-red-900/70 rounded-2xl p-6 neon-border mb-8 animate-fadeIn" style="animation-delay: 0.4s;">
+            <h2 class="text-xl text-neonRed font-bold mb-4 flex items-center justify-center gap-2">
+                <i class="fa fa-wallet"></i> PEMBAYARAN DANA
+            </h2>
+
+            <!-- Blok Nomor Dana Bisa Disalin -->
+            <div onclick="copyNumber()" class="cursor-pointer bg-gradient-to-r from-red-950 to-black px-4 py-3 rounded-lg border border-red-800/60 glow-hover transition-all duration-300 mb-2">
+                <p class="text-sm text-red-300 mb-1">Nomor Rekening</p>
+                <p id="danaNumber" class="text-2xl font-bold tracking-widest text-white">083140875103</p>
+                <p class="text-xs text-red-400 mt-1">👉 Klik untuk menyalin</p>
+            </div>
+            <span id="copyNotif" class="text-green-400 text-sm h-6 flex items-center justify-center opacity-0 transition-opacity duration-300">✅ Berhasil disalin ke papan klip!</span>
+        </div>
+
+        <!-- Kartu QRIS -->
+        <div class="bg-black/65 backdrop-blur-sm border border-red-900/70 rounded-2xl p-6 neon-border animate-fadeIn" style="animation-delay: 0.6s;">
+            <h2 class="text-xl text-neonRed font-bold mb-4 flex items-center justify-center gap-2">
+                <i class="fa fa-qrcode"></i> SCAN QRIS
+            </h2>
+
+            <!-- QRIS yang bisa diperbesar -->
+            <div onclick="openModal()" class="cursor-pointer mx-auto w-48 h-48 rounded-lg overflow-hidden border-2 border-red-700 glow-hover transition-all duration-300">
+                <img src="https://files.catbox.moe/w48p01.jpeg" alt="QRIS Pembayaran" class="w-full h-full object-cover">
+            </div>
+            <p class="text-xs text-red-300 mt-3">👉 Ketuk gambar untuk memperbesar</p>
+        </div>
+
+        <!-- Monolog / Pesan -->
+        <div class="mt-10 text-center animate-fadeIn" style="animation-delay: 0.9s;">
+            <p class="text-red-100 italic text-base leading-relaxed px-4">
+                "Setiap langkah punya harga, setiap janji punya bukti. Tetap teguh, tetap nyata — <br><span class="text-neonRed font-semibold">All Sans Re4l</span>"
+            </p>
+        </div>
+
+        <!-- Audio Suara -->
+        <audio id="clickSound" preload="auto">
+            <source src="https://files.catbox.moe/98rosn.mp3" type="audio/mpeg">
+        
+        <audio id="successSound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" type="audio/mpeg">
+        
+    </div>
+
+    <!-- Modal Perbesar QRIS -->
+    <div id="modalQR" class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div onclick="closeModal()" class="relative max-w-xs w-full">
+            <img src="https://files.catbox.moe/w48p01.jpeg" alt="QRIS Diperbesar" class="w-full h-auto rounded-xl border-2 border-neonRed shadow-[0_0_25px_rgba(255,34,34,0.6)]">
+            <button class="absolute -top-4 -right-4 bg-neonRed hover:bg-red-700 text-black font-bold w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-lg transition-colors">×</button>
+        </div>
+    </div>
+
+    <script>
+        const clickSound = document.getElementById('clickSound');
+        const successSound = document.getElementById('successSound');
+        const copyNotif = document.getElementById('copyNotif');
+        const modal = document.getElementById('modalQR');
+
+        // Fungsi salin nomor
+        function copyNumber() {
+            clickSound.play().catch(()=>{});
+            const nomor = document.getElementById('danaNumber').innerText;
+            navigator.clipboard.writeText(nomor).then(() => {
+                successSound.play().catch(()=>{});
+                copyNotif.classList.remove('opacity-0');
+                setTimeout(() => {
+                    copyNotif.classList.add('opacity-0');
+                }, 2500);
+            });
+        }
+
+        // Fungsi buka tutup modal QR
+        function openModal() {
+            clickSound.play().catch(()=>{});
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            clickSound.play().catch(()=>{});
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'auto';
+        }
+        // Tutup modal jika klik area gelap
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+    </script>
+</body>
+</html>
